@@ -2,24 +2,10 @@
   <div ref="containerRef"></div>
 </template>
 <script setup lang="ts">
-import { Cesium } from "@/core/cesium";
-const viewr = Cesium.initViewer()
-
-const uav = Cesium.addModels(viewr)
-Cesium.animation(viewr,uav)
-Cesium.bindEvent()
-
-
-// import { Viewer } from 'cesium';
+import { useCesium } from "@/hooks/useCesium"
+import { useUAV } from "@/hooks/useUAV";
+const element = document.querySelector("#app") as HTMLElement
+const { viewer } = useCesium(element)
+const { render} = useUAV(viewer, "/models/tb2.glb")
+render()
 </script>
-<style>
-* {
-  padding: 0;
-  margin: 0;
-}
-
-#app {
-  width: 100vw;
-  height: 100vh;
-}
-</style>
