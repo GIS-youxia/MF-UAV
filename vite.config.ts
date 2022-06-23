@@ -1,10 +1,14 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
-import cesium from 'vite-plugin-cesium'
+import cesium from 'vite-plugin-cesium';
 export default defineConfig({
+  base: './',
+  build: {
+    outDir: './docs',
+  },
   plugins: [
     cesium(),
     vue({
@@ -28,4 +32,4 @@ export default defineConfig({
       '#': path.resolve(__dirname, './types'),
     },
   },
-})
+});
