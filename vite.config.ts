@@ -1,0 +1,31 @@
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import path from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import cesium from 'vite-plugin-cesium'
+export default defineConfig({
+  plugins: [
+    cesium(),
+    vue({
+      reactivityTransform: true,
+    }),
+    AutoImport({
+      resolvers: [],
+      imports: ['vue'],
+      dts: 'types/auto-imports.d.ts',
+    }),
+    Components({
+      resolvers: [],
+      dirs: ['src/components'],
+      directoryAsNamespace: true,
+      dts: 'types/components.d.ts',
+    }),
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '#': path.resolve(__dirname, './types'),
+    },
+  },
+})
