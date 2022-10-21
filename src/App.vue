@@ -1,43 +1,34 @@
 <template>
-  <div class="panel">
-    <div v-for="(value, label) in flightParams"> {{ label }}:{{ value }} </div>
-    <div class="map" ref="container"></div>
+  <div class="control">
+    <BaseFlightParams :data="flightParams" />
+    <BaseMapPreview :data="flightParams" />
+    <BaseTutorial />
   </div>
 </template>
 <script setup lang="ts">
-  import * as L from "leaflet"
-  import "leaflet/dist/leaflet.css"
+  import BaseMapPreview from "@/components/BaseMapPreview.vue"
+  import BaseFlightParams from "@/components/BaseFlightParams.vue"
+  import BaseTutorial from "@/components/BaseTutorial.vue"
   import { useCesium } from "@/hooks/useCesium"
   import { useUav } from "@/hooks/useUav"
   import { onMounted, ref } from "vue"
 
   const app = document.querySelector("#app") as HTMLElement
   const { viewer } = useCesium(app)
-  const { flightParams } = useUav(viewer, "/models/tb2.glb")
-  const container = ref()
-  onMounted(() => {
-    const map = L.map(container.value).setView(
-      [flightParams.lat, flightParams.lng],
-      10
-    )
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map)
-    const latlngs = [[flightParams.lat, flightParams.lng]]
-    setInterval(() => {
-      latlngs.push([flightParams.lat, flightParams.lng])
-      var polyline = L.polyline(latlngs, { color: "red" }).addTo(map)
-      // map.fitBounds(polyline.getBounds())
-    }, 1000)
-  })
+  const { flightParams } = useUav(
+    viewer,
+    `${import.meta.env.VITE_API_DOMAIN}/models/tb2.glb`
+  )
+  alert(import.meta.env.VITE_API_DOMAIN)
+  // const container = ref()wa
 </script>
 <style lang="scss" scoped>
-  .panel {
+  .control {
     position: absolute;
+    top: 10px;
+    left: 10px;
     z-index: 9999;
-    top: 0;
-    .map {
-      width: 200px;
-      height: 200px;
-      background-color: red;
-    }
+    display: grid;
+    grid-gap: 10px;
   }
 </style>

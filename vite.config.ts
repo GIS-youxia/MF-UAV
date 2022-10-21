@@ -8,6 +8,10 @@ import cesium from "vite-plugin-cesium"
 const env = (mode: string, key: string) => loadEnv(mode, process.cwd())[key]
 export default ({ mode }: any) => {
   return defineConfig({
+    base: "./",
+    build: {
+      outDir: "./docs",
+    },
     plugins: [
       vue(),
       vueJsx(),

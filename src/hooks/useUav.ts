@@ -7,26 +7,30 @@ export function useUav(viewer: cesium.Viewer, uri: string) {
     DOWN: "s",
     LEFT: "a",
     RIGHT: "d",
+    SPEED_UP: "q",
+    SPEED_DOWN: "e",
   }
   const keysMap = {
     [DIRECTION_ENUM.UP]: false,
     [DIRECTION_ENUM.DOWN]: false,
     [DIRECTION_ENUM.LEFT]: false,
     [DIRECTION_ENUM.RIGHT]: false,
+    [DIRECTION_ENUM.SPEED_UP]: false,
+    [DIRECTION_ENUM.SPEED_DOWN]: false,
   }
   const flightParams = reactive<FlightParamsType>({
     lat: 30,
     lng: 120,
-    altitude: 20000,
+    altitude: 2000,
     heading: 0,
     pitch: 0,
     roll: 0,
     correction: 1,
-    step: 0.005,
+    speed: 1224,
   })
   //加载飞行器模型
   const lodaFlightModel = () => {
-    const position = cesium.Cartesian3.fromDegrees(120, 30, 20000)
+    const position = cesium.Cartesian3.fromDegrees(120, 30, 2000)
     const hpr = new cesium.HeadingPitchRoll()
     const orientation = cesium.Transforms.headingPitchRollQuaternion(
       position,
@@ -59,11 +63,11 @@ export function useUav(viewer: cesium.Viewer, uri: string) {
     })
   }
   const adjustFlightAttitude = () => {
-    flightParams.lng += flightParams.step * Math.cos(flightParams.heading)
-    flightParams.lat -= flightParams.step * Math.sin(flightParams.heading)
+    const temp = flightParams.speed / 60 / 60 / 60 / 110
+    flightParams.lng += temp * Math.cos(flightParams.heading)
+    flightParams.lat -= temp * Math.sin(flightParams.heading)
     const { lng, lat, altitude, heading, pitch, roll } = flightParams
-    flightParams.altitude +=
-      flightParams.step * Math.sin(pitch) * 110 * 1000 * 10
+    flightParams.altitude += temp * Math.sin(pitch) * 110 * 1000 * 10
     const position = cesium.Cartesian3.fromDegrees(lng, lat, altitude)
     // const position = viewer.scene.clampToHeight(
     //   cesium.Cartesian3.fromDegrees(lng, lat, altitude),
@@ -81,21 +85,33 @@ export function useUav(viewer: cesium.Viewer, uri: string) {
     model.position = position
   }
   const adjustFlightParams = () => {
+    if (keysMap[DIRECTION_ENUM.SPEED_UP]) {
+      flightParams.speed += 100
+    }
+    if (keysMap[DIRECTION_ENUM.SPEED_DOWN]) {
+      if (flightParams.speed >= 500) {
+        flightParams.speed -= 100
+      }
+    }
+
     //机体爬升
-    if (keysMap[DIRECTION_ENUM.UP]) {
+    if (keysMap[DIRECTION_ENUM.UP] && flightParams.pitch <= 0.3) {
       flightParams.pitch += 0.005
       if (flightParams.pitch > 0) {
-        const { step, pitch } = flightParams
+        const { speed, pitch } = flightParams
+        const temp = (flightParams.speed / 60 / 60 / 60) * 110
         //1经纬度约等于110km
-        flightParams.altitude += step * Math.sin(pitch) * 110 * 1000
+        flightParams.altitude += temp * Math.sin(pitch)
       }
     }
     //机体俯冲
-    if (keysMap[DIRECTION_ENUM.DOWN]) {
+    if (keysMap[DIRECTION_ENUM.DOWN] && flightParams.pitch >= -0.3) {
       flightParams.pitch -= 0.01
       if (flightParams.pitch < 0) {
-        const { step, pitch } = flightParams
+        const { speed, pitch } = flightParams
         //1经纬度约等于110km
+        const temp = (flightParams.speed / 60 / 60 / 60) * 110
+        flightParams.altitude += temp * Math.sin(pitch)
       }
     }
     //机体左转
@@ -148,5 +164,5 @@ export type FlightParamsType = {
   pitch: number
   roll: number
   correction: number
-  step: number
+  speed: number
 }

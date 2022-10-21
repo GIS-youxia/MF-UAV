@@ -12,6 +12,7 @@
   "dependencies": {
     "cesium": "^1.98.1",
     "leaflet": "^1.9.2",
+    "lodash": "^4.17.21",
     "postcss": "^8.4.18",
     "postcss-html": "^1.5.0",
     "postcss-scss": "^4.0.5",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
+    "@types/leaflet": "^1.9.0",
     "@types/node": "^16.11.68",
     "@vitejs/plugin-vue": "^3.0.3",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
