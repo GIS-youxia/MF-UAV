@@ -19,8 +19,6 @@
     viewer,
     `${import.meta.env.VITE_API_DOMAIN}/models/tb2.glb`
   )
-  alert(import.meta.env.VITE_API_DOMAIN)
-  // const container = ref()wa
 </script>
 <style lang="scss" scoped>
   .control {
