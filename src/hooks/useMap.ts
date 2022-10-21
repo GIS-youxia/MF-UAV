@@ -9,7 +9,7 @@ export function useMap(element: Ref<HTMLElement | undefined>) {
     const container = element.value as HTMLElement
     map.value = L.map(container, {
       center: [30, 120],
-      zoom: 6,
+      zoom: 10,
       zoomControl: false,
       attributionControl: false,
     })
