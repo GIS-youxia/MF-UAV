@@ -2,13 +2,15 @@
 
 > 这是一个关于`cesium`框架的一个无人机模拟控制器的小`demo`
 
-
+![screenshot](https://github.com/fengtianxi001/MF-UAV/blob/master/screenshot/index.png?raw=true)
 
 
 
 ## 1. 项目功能点
 
 - 通过按键调整飞行器的飞行姿态
+
+- 按键无冲
 
 - 实时获取飞行器的飞行参数
 
