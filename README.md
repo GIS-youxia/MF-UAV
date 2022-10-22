@@ -3,7 +3,7 @@
 > 这是一个关于`cesium`框架的一个无人机模拟控制器的小`demo`
 
 ![screenshot](https://github.com/fengtianxi001/MF-UAV/blob/master/screenshot/index.jpg?raw=true)
-
+![screenshot](https://github.com/fengtianxi001/MF-UAV/blob/master/screenshot/index.gif?raw=true)
 
 
 ## 1. 项目功能点
